@@ -1,0 +1,31 @@
+import { Amplify } from 'aws-amplify';
+import { Navigate } from 'react-router-dom';
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+
+import awsExports from '../aws-exports';
+import { useState } from 'react';
+Amplify.configure(awsExports);
+
+export default function SignIn() {
+  const [redirect, setRedirect] = useState(false);
+  const handleChange = (state) => {
+    console.log(state);
+    if (state === 'signedIn') {
+      setRedirect(true);
+    }
+  };
+  return (
+    <>
+      {redirect && <Navigate replace to="/all_restaurant" />}
+      <Authenticator onStateChange={handleChange}>
+        {({ signOut, user }) => (
+          <main>
+            <h1>Hello {user.username}</h1>
+            <button onClick={signOut}>Sign out</button>
+          </main>
+        )}
+      </Authenticator>
+    </>
+  );
+}
