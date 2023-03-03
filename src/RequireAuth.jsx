@@ -7,8 +7,9 @@ export function RequireAuth({ children }) {
   const location = useLocation();
   const { route } = useAuthenticator((context) => [context.route]);
   if (route !== 'authenticated') {
-    console.log('user details = ', Auth.currentAuthenticatedUser());
     return <Navigate to="/login" state={{ from: location }} replace />;
+  } else {
+    console.log('user details = ', Auth.currentAuthenticatedUser());
   }
   return children;
 }
